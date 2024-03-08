@@ -1,11 +1,18 @@
-spring
+spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/CloudflareDB
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password:
+    hikari:
+      maximumPoolSize: 10
+      minimumIdle: 5
+      idleTimeout: 30000
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
