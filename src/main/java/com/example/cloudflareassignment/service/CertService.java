@@ -54,7 +54,6 @@ public class CertService {
         return certDomain;
     }
     public void notifyExternalSystem(CertDomain certDomain) throws IOException{
-        // HTTP POST logic goes here
         CertDTO certDTO = CertDTO.from(certDomain);
         String payload = jsonMapper.writeValueAsString(certDTO);
         okhttp3.RequestBody body = okhttp3.RequestBody.create(payload, okhttp3.MediaType.parse("application/json"));

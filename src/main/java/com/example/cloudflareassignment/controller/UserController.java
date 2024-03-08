@@ -38,6 +38,7 @@ public class UserController {
     @Autowired
     private CertService certService;
 
+    //create user
     @ResponseBody
     @PostMapping("/v1/user")
     public ResponseEntity<ApiResponse<UserDTO>> saveUser(@RequestBody @Validated UserDTO userDTO) {
@@ -50,23 +51,35 @@ public class UserController {
                 .salt(salt)
                 .password(getSaltedHash(userDTO.getPassword(),createSalt()))
                 .build();
-        userDomain = userRepo.save(userDomain);
-        return ResponseEntity.ok(
-                ApiResponse.of(Status.OK, "user saved", UserDTO.from(userDomain)));
+        try {
+            userDomain = userRepo.save(userDomain);
+            return ResponseEntity.ok(
+                    ApiResponse.of(Status.OK, "user saved", UserDTO.from(userDomain)));
+        } catch (Exception e) {
+            log.error("Failed to save user", e);
+            return ResponseEntity.internalServerError().build();
+        }
 
     }
 
+    //delete user
     @ResponseBody
     @DeleteMapping("/v1/user/{id}")
     public ResponseEntity<ApiResponse<UserDTO>> deleteUser(@PathVariable Long id){
         UserDomain userDomain = userRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "user not found"));
         log.info("delete user {}", userDomain.getName());
 
-        userRepo.deleteById(id);
-        return ResponseEntity.ok(
-                ApiResponse.of(Status.OK, "user deleted", UserDTO.from(userDomain)));
+        try {
+            userRepo.deleteById(id);
+            return ResponseEntity.ok(
+                    ApiResponse.of(Status.OK, "user deleted", UserDTO.from(userDomain)));
+        } catch (Exception e) {
+            log.error("Failed to delete user", e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
+    //get user
     @ResponseBody
     @GetMapping("/v1/user/{id}")
     public ResponseEntity<ApiResponse<UserDTO>> getUser(@PathVariable Long id){
@@ -77,6 +90,7 @@ public class UserController {
                 ApiResponse.of(Status.OK, "user got", UserDTO.from(userDomain)));
     }
 
+    //create cert
     @ResponseBody
     @PostMapping("/v1/user/{userId}/cert")
     public ResponseEntity<ApiResponse<CertDTO>> saveCert(@PathVariable Long userId, @RequestBody @Validated CertDTO certDTO){
@@ -89,24 +103,35 @@ public class UserController {
                 .pk(certDTO.getPk().getBytes(StandardCharsets.UTF_8))
                 .cert(certDTO.getCert().getBytes(StandardCharsets.UTF_8))
                 .build();
-
-        certDomain = certRepo.save(certDomain);
-        return ResponseEntity.ok(
-                ApiResponse.of(Status.OK, "certificate saved", CertDTO.from(certDomain)));
+        try {
+            certDomain = certRepo.save(certDomain);
+            return ResponseEntity.ok(
+                    ApiResponse.of(Status.OK, "certificate saved", CertDTO.from(certDomain)));
+        } catch (Exception e) {
+            log.error("Failed to save cert", e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
+    //list all of a user's active certs
     @ResponseBody
     @GetMapping("/v1/user/{userId}/cert")
     public ResponseEntity<ApiResponse<List<CertDTO>>> getCert(@PathVariable Long userId){
         UserDomain userDomain = userRepo.findById(userId).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "user not found"));
         log.info("show certifications from user {}", userDomain.getName());
 
-        List<CertDomain> certDomains = userDomain.getCerts();
-        return ResponseEntity.ok(
-                ApiResponse.of(Status.OK, "show certificates", certDomains.stream().map(CertDTO::from)
-                        .collect(Collectors.toList())));
+        try {
+            List<CertDomain> certDomains = userDomain.getCerts();
+            return ResponseEntity.ok(
+                    ApiResponse.of(Status.OK, "show certificates", certDomains.stream().map(CertDTO::from)
+                            .collect(Collectors.toList())));
+        } catch (Exception e) {
+            log.error("Failed to save cert", e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
+    //activate or deactivate a cert
     @ResponseBody
     @PatchMapping ("/v1/cert/activate/{certId}")
     public ResponseEntity<ApiResponse<CertDTO>> flipCert(@PathVariable Long certId, @RequestBody Map<String, Boolean> updates){

@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
+    url: jdbc:postgresql://pg-3dfb3b5c-racke1983cn-ebca.a.aivencloud.com:24346/defaultdb?sslmode=require
+    username: avnadmin
     password:
     hikari:
       maximumPoolSize: 10
