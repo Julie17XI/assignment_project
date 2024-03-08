@@ -1,0 +1,11 @@
+spring
+  datasource:
+    url: jdbc:postgresql://localhost:5432/CloudflareDB
+    username: postgres
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
