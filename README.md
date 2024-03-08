@@ -4,10 +4,15 @@ This project provides a robust HTTP-based RESTful API designed for managing Cust
 
 ## Features
 Customer Management: Create and delete customer profiles. Each customer has a name, an email address, and a password.
+
 Certificate Management: Create certificates for customers. Each certificate is associated with one customer and has a status (active/inactive), a private key, and a certificate body.
+
 Active Certificates Listing: Retrieve a list of all active certificates belonging to a specific customer.
+
 Certificate Activation/Deactivation: Change the status of a certificate. Notifications are sent to an external system (http://requestb.in) upon activation or deactivation.
+
 Persistence: Ensure data durability and integrity, surviving computer restarts and system failures.
+
 ## Getting Started
 ### Prerequisites
 Java JDK 21
