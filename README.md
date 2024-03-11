@@ -32,6 +32,9 @@ Configure your database settings in application.yml.
 Run the application:
 ```java -Dspring.datasource.password=PASSWORD -jar build/libs/cloudflare-assignment-0.0.1-SNAPSHOT.jar```
 
+Check API design:
+Navigate to http://localhost:8080/swagger-ui/index.html
+
 Contact
 Xi Tang - xi.tang717@gmail.com
 

@@ -1,11 +1,17 @@
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
 spring:
   datasource:
-    url: jdbc:postgresql://pg-3dfb3b5c-racke1983cn-ebca.a.aivencloud.com:24346/defaultdb?sslmode=require
+    url: jdbc:postgresql://pg-eadde2e-xi-cloudflare.a.aivencloud.com:13464/defaultdb?sslmode=require
     username: avnadmin
     password:
     hikari:
       maximumPoolSize: 10
-      minimumIdle: 5
+      minimumIdle: 2
       idleTimeout: 30000
   jpa:
     show-sql: true
@@ -14,5 +20,4 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
 
